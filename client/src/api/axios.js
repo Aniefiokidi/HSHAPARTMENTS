@@ -1,7 +1,10 @@
 import axios from 'axios';
 
+// In production, always use same-origin API path on Vercel.
+const baseURL = import.meta.env.PROD ? '/api' : (import.meta.env.VITE_API_URL || '/api');
+
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || '/api',
+  baseURL,
   timeout: 15000,
 });
 
