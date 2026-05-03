@@ -1,5 +1,3 @@
-require('dotenv').config({ path: './server/.env' });
-
 module.exports = async (req, res) => {
   try {
     const app = require('../server/app');

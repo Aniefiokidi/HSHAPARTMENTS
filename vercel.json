@@ -5,6 +5,7 @@
   "outputDirectory": "client/dist",
   "functions": {
     "api/[...all].js": {
+      "includeFiles": "server/**",
       "maxDuration": 30
     }
   },
