@@ -39,7 +39,7 @@ export default function Navbar() {
           <img
             src="https://res.cloudinary.com/dgqxt06km/image/upload/v1777811125/ChatGPT_Image_May_3__2026__11_50_43_AM-removebg-preview_nnigck.png"
             alt="Her Serene Highness Apartments"
-            className="h-20 w-auto object-contain bg-white rounded-lg p-1"
+            className="h-28 w-auto object-contain"
           />
         </Link>
 
