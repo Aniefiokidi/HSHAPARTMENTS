@@ -13,6 +13,7 @@ const connectDB = async () => {
 
   try {
     connectPromise = mongoose.connect(process.env.MONGODB_URI, {
+      dbName: 'hsh-apartments',
       serverSelectionTimeoutMS: 10000,
     });
 
