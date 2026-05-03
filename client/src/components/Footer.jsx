@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { HiLocationMarker, HiPhone, HiMail } from 'react-icons/hi';
+import { HiLocationMarker, HiPhone } from 'react-icons/hi';
 
 export default function Footer() {
   return (
@@ -48,21 +48,12 @@ export default function Footer() {
           <ul className="space-y-3 text-sm">
             <li className="flex items-start gap-3">
               <HiLocationMarker className="text-accent mt-0.5 shrink-0" size={16} />
-              <span>Lagos, Nigeria</span>
+              <span>Lagos · Enugu · Abuja</span>
             </li>
             <li className="flex items-center gap-3">
               <HiPhone className="text-accent shrink-0" size={16} />
-              <a href="tel:+2348000000000" className="hover:text-accent transition-colors">
-                +234 800 000 0000
-              </a>
-            </li>
-            <li className="flex items-center gap-3">
-              <HiMail className="text-accent shrink-0" size={16} />
-              <a
-                href="mailto:hello@hshapartments.com"
-                className="hover:text-accent transition-colors"
-              >
-                hello@hshapartments.com
+              <a href="tel:08160404040" className="hover:text-accent transition-colors">
+                08160404040
               </a>
             </li>
           </ul>
