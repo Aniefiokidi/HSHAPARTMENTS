@@ -1,6 +1,13 @@
 import { useState, useCallback } from 'react';
 import { HiX, HiChevronLeft, HiChevronRight, HiPlay } from 'react-icons/hi';
 
+// Cloudinary v1 + multer-storage-cloudinary v4 can store video URLs as /image/upload/.
+// Fix them to /video/upload/ so browsers can play them.
+function toVideoUrl(url) {
+  if (!url) return url;
+  return url.replace('/image/upload/', '/video/upload/');
+}
+
 function LightboxModal({ items, currentIndex, onClose, onPrev, onNext }) {
   const item = items[currentIndex];
   const isVideo = item?.type === 'video';
@@ -42,11 +49,16 @@ function LightboxModal({ items, currentIndex, onClose, onPrev, onNext }) {
       >
         {isVideo ? (
           <video
-            src={item.src}
             controls
             autoPlay
+            playsInline
+            crossOrigin="anonymous"
             className="max-h-[80vh] max-w-full"
-          />
+          >
+            <source src={item.src} type="video/mp4" />
+            <source src={item.src} type="video/webm" />
+            Your browser does not support video playback.
+          </video>
         ) : (
           <img
             src={item.src}
@@ -73,10 +85,10 @@ function LightboxModal({ items, currentIndex, onClose, onPrev, onNext }) {
 export default function Gallery({ images = [], videos = [] }) {
   const [lightboxIndex, setLightboxIndex] = useState(null);
 
-  // Combine images + videos into one array
+  // Combine images + videos into one array; fix Cloudinary video URLs
   const allItems = [
     ...images.map((src) => ({ src, type: 'image' })),
-    ...videos.map((src) => ({ src, type: 'video' })),
+    ...videos.map((src) => ({ src: toVideoUrl(src), type: 'video' })),
   ];
 
   const openLightbox = useCallback((index) => setLightboxIndex(index), []);
@@ -104,7 +116,10 @@ export default function Gallery({ images = [], videos = [] }) {
           style={{ gridRow: 'span 2' }}
         >
           {featured.type === 'video' ? (
-            <video src={featured.src} className="w-full h-full object-cover" muted />
+            <video className="w-full h-full object-cover" muted playsInline crossOrigin="anonymous">
+              <source src={featured.src} type="video/mp4" />
+              <source src={featured.src} type="video/webm" />
+            </video>
           ) : (
             <img
               src={featured.src}
@@ -128,7 +143,10 @@ export default function Gallery({ images = [], videos = [] }) {
             onClick={() => openLightbox(idx + 1)}
           >
             {item.type === 'video' ? (
-              <video src={item.src} className="w-full h-full object-cover" muted />
+              <video className="w-full h-full object-cover" muted playsInline crossOrigin="anonymous">
+                <source src={item.src} type="video/mp4" />
+                <source src={item.src} type="video/webm" />
+              </video>
             ) : (
               <img
                 src={item.src}
@@ -161,7 +179,10 @@ export default function Gallery({ images = [], videos = [] }) {
               onClick={() => openLightbox(idx + 5)}
             >
               {item.type === 'video' ? (
-                <video src={item.src} className="w-full h-full object-cover" muted />
+                <video className="w-full h-full object-cover" muted playsInline crossOrigin="anonymous">
+                  <source src={item.src} type="video/mp4" />
+                  <source src={item.src} type="video/webm" />
+                </video>
               ) : (
                 <img
                   src={item.src}

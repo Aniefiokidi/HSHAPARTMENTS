@@ -27,7 +27,11 @@ const uploadVideos = async (req, res) => {
     if (!req.files || req.files.length === 0) {
       return res.status(400).json({ success: false, message: 'No files uploaded' });
     }
-    const urls = req.files.map((file) => file.path);
+    // multer-storage-cloudinary v4 + cloudinary v1 may return /image/upload/ for videos.
+    // Normalise to /video/upload/ so browsers can play them.
+    const urls = req.files.map((file) =>
+      (file.path || '').replace('/image/upload/', '/video/upload/')
+    );
     res.json({ success: true, data: urls });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
