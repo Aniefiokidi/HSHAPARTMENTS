@@ -4,6 +4,15 @@ import ApartmentCard from '../components/ApartmentCard';
 import LoadingSpinner from '../components/LoadingSpinner';
 import api from '../api/axios';
 
+const normalizeSlug = (value = '') =>
+  value
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, '-')
+    .replace(/[^a-z0-9-]/g, '')
+    .replace(/-+/g, '-')
+    .replace(/^-+|-+$/g, '');
+
 export default function ApartmentsPage() {
   const { slug } = useParams();
   const [location, setLocation] = useState(null);
@@ -14,11 +23,18 @@ export default function ApartmentsPage() {
   useEffect(() => {
     window.scrollTo(0, 0);
     setLoading(true);
+    setError(null);
 
     api
-      .get(`/locations/${slug}`)
+      .get('/locations')
       .then(async (locRes) => {
-        const loc = locRes.data.data;
+        const targetSlug = normalizeSlug(slug || '');
+        const loc = (locRes.data.data || []).find((item) => normalizeSlug(item.slug || item.name) === targetSlug);
+
+        if (!loc) {
+          throw new Error('Location not found');
+        }
+
         setLocation(loc);
         document.title = `${loc.name} – Her Serene Highness Apartments`;
 

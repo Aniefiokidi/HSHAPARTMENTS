@@ -101,46 +101,15 @@ export default function Gallery({ images = [], videos = [] }) {
 
   if (allItems.length === 0) return null;
 
-  // Instagram-style layout: first image big, rest in a 3-col grid
-  const featured = allItems[0];
-  const rest = allItems.slice(1);
-
   return (
     <div>
-      {/* Featured + first 4 in a bento grid */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
-        {/* Hero image – spans 2 cols and 2 rows */}
-        <div
-          className="col-span-2 row-span-2 relative overflow-hidden cursor-pointer group aspect-square md:aspect-auto"
-          onClick={() => openLightbox(0)}
-          style={{ gridRow: 'span 2' }}
-        >
-          {featured.type === 'video' ? (
-            <video className="w-full h-full object-cover" muted playsInline crossOrigin="anonymous">
-              <source src={featured.src} type="video/mp4" />
-              <source src={featured.src} type="video/webm" />
-            </video>
-          ) : (
-            <img
-              src={featured.src}
-              alt="Featured"
-              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-              style={{ minHeight: '300px' }}
-            />
-          )}
-          <div className="absolute inset-0 bg-primary/0 group-hover:bg-primary/30 transition-all duration-300 flex items-center justify-center">
-            {featured.type === 'video' && (
-              <HiPlay className="text-white opacity-80" size={48} />
-            )}
-          </div>
-        </div>
-
-        {/* Remaining items */}
-        {rest.slice(0, 4).map((item, idx) => (
+      {/* Uniform media grid: all tiles are equal-size */}
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
+        {allItems.map((item, idx) => (
           <div
             key={idx}
             className="relative overflow-hidden cursor-pointer group aspect-square"
-            onClick={() => openLightbox(idx + 1)}
+            onClick={() => openLightbox(idx)}
           >
             {item.type === 'video' ? (
               <video className="w-full h-full object-cover" muted playsInline crossOrigin="anonymous">
@@ -150,55 +119,16 @@ export default function Gallery({ images = [], videos = [] }) {
             ) : (
               <img
                 src={item.src}
-                alt={`Photo ${idx + 2}`}
+                alt={`Photo ${idx + 1}`}
                 className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
               />
             )}
             <div className="absolute inset-0 bg-primary/0 group-hover:bg-primary/30 transition-all duration-300 flex items-center justify-center">
-              {item.type === 'video' && (
-                <HiPlay className="text-white opacity-80" size={32} />
-              )}
-              {/* Show "+N more" on last visible tile */}
-              {idx === 3 && rest.length > 4 && (
-                <div className="absolute inset-0 bg-primary/60 flex items-center justify-center">
-                  <span className="text-cream font-serif text-2xl">+{rest.length - 4}</span>
-                </div>
-              )}
+              {item.type === 'video' && <HiPlay className="text-white opacity-80" size={32} />}
             </div>
           </div>
         ))}
       </div>
-
-      {/* All photos strip below if > 5 */}
-      {rest.length > 4 && (
-        <div className="mt-2 grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-2">
-          {rest.slice(4).map((item, idx) => (
-            <div
-              key={idx}
-              className="relative overflow-hidden cursor-pointer group aspect-square"
-              onClick={() => openLightbox(idx + 5)}
-            >
-              {item.type === 'video' ? (
-                <video className="w-full h-full object-cover" muted playsInline crossOrigin="anonymous">
-                  <source src={item.src} type="video/mp4" />
-                  <source src={item.src} type="video/webm" />
-                </video>
-              ) : (
-                <img
-                  src={item.src}
-                  alt={`Photo ${idx + 6}`}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                />
-              )}
-              <div className="absolute inset-0 bg-primary/0 group-hover:bg-primary/30 transition-all duration-300 flex items-center justify-center">
-                {item.type === 'video' && (
-                  <HiPlay className="text-white opacity-70" size={24} />
-                )}
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
 
       {/* Lightbox */}
       {lightboxIndex !== null && (
