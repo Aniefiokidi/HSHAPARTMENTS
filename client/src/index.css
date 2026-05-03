@@ -1,0 +1,137 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-cream text-charcoal font-sans antialiased;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4, h5 {
+    @apply font-serif;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 bg-accent text-white font-semibold px-8 py-3 tracking-wider uppercase text-sm transition-all duration-300 hover:bg-accent-light active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-outline {
+    @apply inline-flex items-center justify-center gap-2 border border-accent text-accent font-semibold px-8 py-3 tracking-wider uppercase text-sm transition-all duration-300 hover:bg-accent hover:text-white active:scale-95;
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 text-accent font-semibold px-4 py-2 tracking-wider uppercase text-sm transition-all duration-300 hover:text-accent-light;
+  }
+
+  .section-title {
+    @apply font-serif text-4xl md:text-5xl font-medium text-primary leading-tight;
+  }
+
+  .section-subtitle {
+    @apply font-sans text-muted text-base md:text-lg leading-relaxed;
+  }
+
+  .gold-divider {
+    @apply w-16 h-px bg-accent mx-auto my-6;
+  }
+
+  .gold-divider-left {
+    @apply w-16 h-px bg-accent my-6;
+  }
+
+  .card-hover {
+    @apply transition-all duration-500 hover:-translate-y-1 hover:shadow-2xl;
+  }
+
+  .input-field {
+    @apply w-full bg-white border border-cream-dark px-4 py-3 text-charcoal placeholder-muted focus:outline-none focus:border-accent transition-colors duration-200 text-sm;
+  }
+
+  .label {
+    @apply block text-xs font-semibold tracking-widest uppercase text-muted mb-2;
+  }
+
+  /* Skeleton shimmer */
+  .skeleton {
+    @apply bg-cream-dark animate-shimmer;
+    background: linear-gradient(90deg, #f0e8d5 25%, #faf6ee 50%, #f0e8d5 75%);
+    background-size: 1000px 100%;
+  }
+}
+
+/* React Datepicker overrides */
+.react-datepicker-wrapper {
+  width: 100%;
+}
+
+.react-datepicker {
+  font-family: 'Inter', sans-serif !important;
+  border: 1px solid #f0e8d5 !important;
+  border-radius: 0 !important;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12) !important;
+}
+
+.react-datepicker__header {
+  background-color: #0d0c1a !important;
+  border-bottom: 1px solid #16152b !important;
+  border-radius: 0 !important;
+}
+
+.react-datepicker__current-month,
+.react-datepicker__day-name {
+  color: #e8d5b7 !important;
+}
+
+.react-datepicker__navigation-icon::before {
+  border-color: #c4973f !important;
+}
+
+.react-datepicker__day--selected,
+.react-datepicker__day--in-range,
+.react-datepicker__day--range-start,
+.react-datepicker__day--range-end {
+  background-color: #c4973f !important;
+  border-radius: 0 !important;
+  color: #fff !important;
+}
+
+.react-datepicker__day:hover {
+  background-color: #e8d5b7 !important;
+  border-radius: 0 !important;
+  color: #0d0c1a !important;
+}
+
+.react-datepicker__day--disabled {
+  color: #ccc !important;
+  text-decoration: line-through;
+}
+
+.react-datepicker__day--in-selecting-range {
+  background-color: #e8d5b7 !important;
+  border-radius: 0 !important;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #faf6ee;
+}
+::-webkit-scrollbar-thumb {
+  background: #c4973f;
+}
