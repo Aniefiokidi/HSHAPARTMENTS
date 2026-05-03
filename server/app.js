@@ -26,8 +26,9 @@ app.use(
 
       const configured = process.env.CLIENT_URL || 'http://localhost:5173';
       const isLocalVite = /^http:\/\/localhost:\d+$/.test(origin);
+      const isVercelPreview = /^https:\/\/[a-z0-9-]+\.vercel\.app$/i.test(origin);
 
-      if (origin === configured || isLocalVite) {
+      if (origin === configured || isLocalVite || isVercelPreview) {
         return callback(null, true);
       }
 
