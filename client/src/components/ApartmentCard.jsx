@@ -5,8 +5,12 @@ import { IoBedOutline, IoWaterOutline } from 'react-icons/io5';
 const formatPrice = (price) =>
   new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN', maximumFractionDigits: 0 }).format(price);
 
+const isUrl = (value) => /^https?:\/\//i.test(String(value || ''));
+
 export default function ApartmentCard({ apartment }) {
-  const coverImage = apartment.images?.[0];
+  const coverImage = apartment.images?.find(isUrl);
+  const coverVideo = apartment.videos?.find(isUrl);
+  const locationFallbackImage = apartment.location?.image;
 
   return (
     <div className="group bg-white card-hover overflow-hidden">
@@ -16,6 +20,23 @@ export default function ApartmentCard({ apartment }) {
           <img
             src={coverImage}
             alt={apartment.title}
+            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+            loading="lazy"
+          />
+        ) : coverVideo ? (
+          <video
+            src={coverVideo}
+            className="w-full h-full object-cover"
+            muted
+            playsInline
+            autoPlay
+            loop
+            preload="metadata"
+          />
+        ) : locationFallbackImage ? (
+          <img
+            src={locationFallbackImage}
+            alt={apartment.location?.name || apartment.title}
             className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
             loading="lazy"
           />

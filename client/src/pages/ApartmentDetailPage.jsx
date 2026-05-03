@@ -11,6 +11,8 @@ import Gallery from '../components/Gallery';
 import LoadingSpinner from '../components/LoadingSpinner';
 import api from '../api/axios';
 
+const isUrl = (value) => /^https?:\/\//i.test(String(value || ''));
+
 const formatPrice = (n) =>
   new Intl.NumberFormat('en-NG', {
     style: 'currency',
@@ -26,14 +28,45 @@ export default function ApartmentDetailPage() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    api
-      .get(`/apartments/${id}`)
-      .then((res) => {
-        setApartment(res.data.data);
-        document.title = `${res.data.data.title} – Her Serene Highness`;
-      })
-      .catch(() => setError('Apartment not found.'))
-      .finally(() => setLoading(false));
+    setLoading(true);
+    setError(null);
+
+    const normalizeApartment = (apt) => ({
+      ...apt,
+      images: (apt.images || []).filter(isUrl),
+      videos: (apt.videos || []).filter(isUrl),
+    });
+
+    const loadApartment = async () => {
+      try {
+        // First try direct by-id endpoint
+        const res = await api.get(`/apartments/${id}`);
+        const normalized = normalizeApartment(res.data.data);
+        setApartment(normalized);
+        document.title = `${normalized.title} – Her Serene Highness`;
+      } catch {
+        try {
+          // Vercel can miss dynamic API paths; fallback to list endpoint
+          const listRes = await api.get('/apartments');
+          const found = (listRes.data.data || []).find((item) => String(item._id) === String(id));
+
+          if (!found) {
+            setError('Apartment not found.');
+            return;
+          }
+
+          const normalized = normalizeApartment(found);
+          setApartment(normalized);
+          document.title = `${normalized.title} – Her Serene Highness`;
+        } catch {
+          setError('Apartment not found.');
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadApartment();
   }, [id]);
 
   if (loading) return <div className="pt-24"><LoadingSpinner /></div>;
