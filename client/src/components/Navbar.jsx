@@ -35,13 +35,12 @@ export default function Navbar() {
     >
       <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
         {/* Logo */}
-        <Link to="/" className="flex flex-col items-start group">
-          <span className="text-accent font-display text-xs tracking-[0.3em] uppercase">
-            Her Serene Highness
-          </span>
-          <span className="text-cream font-serif text-xl tracking-wide leading-tight">
-            Apartments
-          </span>
+        <Link to="/" className="flex items-center group">
+          <img
+            src="https://res.cloudinary.com/dgqxt06km/image/upload/v1777811125/ChatGPT_Image_May_3__2026__11_50_43_AM-removebg-preview_nnigck.png"
+            alt="Her Serene Highness Apartments"
+            className="h-12 w-auto object-contain"
+          />
         </Link>
 
         {/* Desktop nav */}
