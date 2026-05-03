@@ -1,5 +1,14 @@
 const mongoose = require('mongoose');
 
+const toSlug = (value = '') =>
+  value
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, '-')
+    .replace(/[^a-z0-9-]/g, '')
+    .replace(/-+/g, '-')
+    .replace(/^-+|-+$/g, '');
+
 const locationSchema = new mongoose.Schema(
   {
     name: {
@@ -25,5 +34,14 @@ const locationSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+locationSchema.pre('validate', function normalizeSlug(next) {
+  if (this.name) {
+    this.slug = toSlug(this.name);
+  } else if (this.slug) {
+    this.slug = toSlug(this.slug);
+  }
+  next();
+});
 
 module.exports = mongoose.model('Location', locationSchema);
